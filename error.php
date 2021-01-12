@@ -9,7 +9,7 @@ class Errors {
 			"status" => "error",
 			"message" => $message
 		);
-		die(json_encode($text, JSON_PRETTY_PRINT));
+		die(json_encode($text));
 	}
 }
 ?>

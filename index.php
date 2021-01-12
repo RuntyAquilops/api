@@ -67,11 +67,14 @@ switch($method) {
               getSortRooms($connection, $_GET['sort']);
           } elseif (!isset($_GET['sort'])) {
               getRooms($connection);
+          } else {
+              $resp->err("Check parameters");
           }
       } elseif ($operation === 'bookings') {
           if (isset($_GET['id_room'])) {
               getOneBooking($connection, $_GET['id_room']);
           } else {
+              http_response_code(422);
               $resp->err("Uncorrect request");
           }
       } else {

@@ -20,7 +20,7 @@ function createBooking($connection, $inputData)
             'id_booking' => $last_id
         );
         http_response_code(201);
-        echo json_encode($response, JSON_PRETTY_PRINT);
+        echo json_encode($response);
     } elseif (!isValidDate($data_start) || !isValidDate($data_end)) {
         http_response_code(422);
         $er->err("Not valid start_data or end_data. Please check parameters. Remember that data must be 'year-month-day'");
@@ -40,18 +40,18 @@ function getOneBooking($connection, $idRoom)
     $bookings = $connection->query("SELECT * FROM bookings WHERE id_room = $idRoom ORDER BY start_data");
     $bookings_list = [];
 
-    if ($idRoom != NULL && $idRoom == ['^[0-9]+$'] && mysqli_num_rows($bookings) > 0) {
+    if ($idRoom != NULL && is_numeric($idRoom) && mysqli_num_rows($bookings) > 0) {
         http_response_code(200);
         while($booking = $bookings->fetch_assoc()) {
             $bookings_list[] = $booking;
         }
-        echo json_encode($bookings_list, JSON_PRETTY_PRINT);
-    } elseif($idRoom != NULL && $idRoom == ['^[0-9]+$'] && mysqli_num_rows($bookings) === 0) {
+        echo json_encode($bookings_list);
+    } elseif($idRoom != NULL && is_numeric($idRoom) && mysqli_num_rows($bookings) === 0) {
         http_response_code(404);
         $resp->err("Hotel room not found");
     } else {
         http_response_code(422);
-        $resp->err("Uncorrect request");
+        $resp->err("Uncorrect request. Check parameter");
     }
 }
 
@@ -66,7 +66,7 @@ function deleteBooking($connection, $idBooking)
         $response = array(
             "status" => "Booking with id $idBooking was deleted"
         );
-        echo json_encode($response, JSON_PRETTY_PRINT);
+        echo json_encode($response);
     } elseif ($existBooking == 0 && $idBooking != NULL) {
         http_response_code(404);
         $er->err("Booking with id $idBooking not found");

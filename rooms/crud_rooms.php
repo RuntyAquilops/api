@@ -23,7 +23,7 @@ function createRoom($connection, $inputData)
         $response = array(
             'id_room' => mysqli_insert_id($connection)
         );
-        echo json_encode($response, JSON_PRETTY_PRINT);
+        echo json_encode($response);
     } else {
         http_response_code(422);
         $er->err("Uncorrect request");
@@ -38,7 +38,7 @@ function getRooms($connection)
     while($room = $rooms->fetch_assoc()) {
         $rooms_list[] = $room;
     }
-    echo json_encode($rooms_list, JSON_PRETTY_PRINT);
+    echo json_encode($rooms_list);
 }
 
 // удаляет номер отеля и все его брони. Принимает на вход ID номера отеля
@@ -53,7 +53,7 @@ function deleteRoom($connection, $idRoom)
         $response = array(
             "status" => "Room and bookings with id_room $idRoom was deleted"
         );
-        echo json_encode($response, JSON_PRETTY_PRINT);
+        echo json_encode($response);
     } elseif ($existRoom == 0 && $idRoom != NULL) {
         http_response_code(404);
         $er->err("Room with id $idRoom not found");
@@ -61,7 +61,6 @@ function deleteRoom($connection, $idRoom)
         http_response_code(422);
         $er->err("Uncorrect request");
     }
-
 }
 
 ?>
