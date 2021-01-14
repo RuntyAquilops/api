@@ -7,7 +7,7 @@ class Errors {
 	{
 		$text = array(
 			"status" => "error",
-			"message" => $message
+			"message" =>  $message
 		);
 		die(json_encode($text));
 	}

@@ -11,7 +11,7 @@ function createBooking($connection, $inputData)
     $id_room = $inputData['id_room'];
     $data_start = $inputData['start_data'];
     $data_end = $inputData['end_data'];
-    $existRoom = checkRow($connection, $id_room, 'bookings', 'id_room');
+    $existRoom = checkRow($connection, $id_room, 'room_list', 'id_room');
 
     if (isValidDate($data_start) && isValidDate($data_end) && $existRoom) {
         $connection->query("INSERT INTO `bookings` (`id_booking`, `id_room`, `start_data`, `end_data`) VALUES (NULL, '$id_room', '$data_start', '$data_end');");
@@ -48,7 +48,7 @@ function getOneBooking($connection, $idRoom)
         echo json_encode($bookings_list);
     } elseif($idRoom != NULL && is_numeric($idRoom) && mysqli_num_rows($bookings) === 0) {
         http_response_code(404);
-        $resp->err("Hotel room not found");
+        $resp->err("Bookings not found");
     } else {
         http_response_code(422);
         $resp->err("Uncorrect request. Check parameter");

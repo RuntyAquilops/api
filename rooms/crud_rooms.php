@@ -4,6 +4,8 @@ include_once 'utils.php';
 include_once 'error.php';
 include_once 'connect.php';
 
+header('Content-Type: application/json; charset:UTF-8');
+
 // добавить номер отеля. Принимает на вход текстовое описание и цену за ночь. Возвращает ID номера отеля.
 function createRoom($connection, $inputData)
 {
@@ -18,12 +20,16 @@ function createRoom($connection, $inputData)
         http_response_code(409);
         $er->err("This hotel room already exists");
     } elseif ($number_room && $cost && $data_create) {
-        $connection->query("INSERT INTO `room_list` (`id_room`, `number_room`, `cost_per_night`, `data_create`) VALUES (NULL, '$number_room', '$cost', '$data_create');");
-        http_response_code(201);
-        $response = array(
-            'id_room' => mysqli_insert_id($connection)
-        );
-        echo json_encode($response);
+        $query = $connection->query("INSERT INTO `room_list` (`id_room`, `number_room`, `cost_per_night`, `data_create`) VALUES (NULL, '$number_room', '$cost', '$data_create');");
+        if ($query) {
+            http_response_code(201);
+            $response = array(
+                'id_room' => $connection->insert_id);
+            echo json_encode($response);
+        } elseif (!$query) {
+            http_response_code(500);
+            $er->err("Cant insert row in table. Check parametres or its problem with charset. Please retry with english characters");
+        }
     } else {
         http_response_code(422);
         $er->err("Uncorrect request");
@@ -49,11 +55,16 @@ function deleteRoom($connection, $idRoom)
     if ($existRoom != 0 && $idRoom != NULL) {
         $query = $connection->query("DELETE FROM bookings WHERE bookings.id_room = $idRoom");
         $q_2 = $connection->query("DELETE FROM room_list WHERE room_list.id_room = $idRoom");
-        http_response_code(200);
-        $response = array(
-            "status" => "Room and bookings with id_room $idRoom was deleted"
-        );
-        echo json_encode($response);
+        if ($query && $q_2) {
+            http_response_code(200);
+            $response = array(
+                "status" => "Room and bookings with id_room $idRoom was deleted"
+            );
+            echo json_encode($response);
+        } else {
+            http_response_code(500);
+            $er->err("Some problems with deleting");
+        }
     } elseif ($existRoom == 0 && $idRoom != NULL) {
         http_response_code(404);
         $er->err("Room with id $idRoom not found");
