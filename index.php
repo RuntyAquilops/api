@@ -43,13 +43,13 @@ switch($method) {
           if (isset($params[2])) {
               deleteRoom($connection, $params[2]);
           } else {
-              $resp->err("Check parameters. Example: localhost/api/rooms/delete/2, where 2 is id room");
+              $resp->err("Check parameters. You will find example in README.md");
           }
       } elseif ($operation === 'bookings' && $params[1] == 'delete') {
           if (isset($params[2])) {
               deleteBooking($connection, $params[2]);
           } else {
-              $resp->err("Check parameters. Example: localhost/api/bookings/delete/13, where 13 is id booking");
+              $resp->err("Check parameters. You will find example in README.md");
           }
       } else {
           http_response_code(422);
@@ -61,8 +61,7 @@ switch($method) {
       if ($operation === 'rooms') {
           if (isset($_GET['sort'])) {
               getSortRooms($connection, $_GET['sort']);
-          } elseif (!isset($_GET['sort'])) {
-              echo 'here';
+          } elseif (!isset($_GET['sort']) && count($params) == 1) {
               getRooms($connection);
           } else {
               $resp->err("Check parameters");
