@@ -46,7 +46,7 @@ curl -X POST -d "number_room=13" -d "cost_per_night=1000" http://localhost/hotel
 
 
 ```
-curl -X GET http://localhost/hotel/rooms/
+curl -X GET -L http://localhost/hotel/rooms/
 ```
 
 Также есть возможность сортировки по цене (cost_per_night) или дате добавления (data_create). Если написан '-' перед параметром, то значения сортируются по убыванию (DESC). Если ничего не указано перед параметром, то сортировка по возрастанию (ASC).
@@ -68,30 +68,30 @@ curl -X GET -L http://localhost/hotel/rooms/sort=data_create
 Принимает на вход ID номера отеля (в примере id номера отеля равно 6). Возвращает сообщение об удачном удалении или ошибку.
 
 ```
-curl -X DELETE http://localhost/hotel/rooms/delete/6
+curl -X DELETE -L http://localhost/hotel/rooms/delete/6
 ```
 
 ## Добавление брони 
 Принимает на вход существующий ID номера отеля, дату начала, дату окончания брони. Возвращает ID созданной брони.
 ```
-curl -X POST -d "id_room=2" -d "start_data=2021-12-21" -d "end_data=2021-12-23" http://localhost/hotel/bookings/create/
+curl -X POST -d "id_room=2" -d "start_data=2021-12-21" -d "end_data=2021-12-23" -L http://localhost/hotel/bookings/create/
 ```
 
 ## Получение списка броней номера отеля
 Принимает на вход ID номера отеля. Возвращает список бронирований, каждое бронирование содержит ID брони, ID номера отеля, дату начала, дату окончания. Бронирования отсортированы по дате начала. 
 
 ```
-curl -X GET -L localhost/hotel/bookings?id_room=2
+curl -X GET -L http://localhost/hotel/bookings?id_room=2
 ```
 
 ## Удаление брони 
 Принимает на вход ID брони (в примере ID равен 2). Возвращает сообщение об удачном удалении или ошибку.
 
 ```
-curl -X DELETE localhost/hotel/bookings/delete/2
+curl -X DELETE -L http://localhost/hotel/bookings/delete/2
 ```
 
-# Вопросы, с которыми я столкнулась
+# Вопросы, которые возникли при работе
 1. PDO или mySQLi? 
 
 PDO показался мне немного сложным для довольно простого сервиса. Тем более я собиралась использовать только базу данных mySQL. В результате чего я выбрала mySQLi.
