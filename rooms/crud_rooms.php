@@ -20,6 +20,8 @@ function createRoom($connection, $inputData)
         http_response_code(409);
         $er->err("This hotel room already exists");
     } elseif ($number_room && $cost && $data_create) {
+        $number_room = $connection->real_escape_string($number_room);
+        $cost = $connection->real_escape_string($cost);
         $query = $connection->query("INSERT INTO `room_list` (`id_room`, `number_room`, `cost_per_night`, `data_create`) VALUES (NULL, '$number_room', '$cost', '$data_create');");
         if ($query) {
             http_response_code(201);
@@ -36,7 +38,7 @@ function createRoom($connection, $inputData)
     }
 }
 
-// получение информацию о всех номеров в отеле
+// получение информации о всех номеров в отеле
 function getRooms($connection)
 {
     $rooms = $connection->query("SELECT * FROM room_list");
@@ -53,6 +55,7 @@ function deleteRoom($connection, $idRoom)
     $er = new Errors();
     $existRoom = checkRow($connection, $idRoom, 'room_list', 'id_room');
     if ($existRoom != 0 && $idRoom != NULL) {
+        $idRoom = $connection->real_escape_string($idRoom);
         $query = $connection->query("DELETE FROM bookings WHERE bookings.id_room = $idRoom");
         $q_2 = $connection->query("DELETE FROM room_list WHERE room_list.id_room = $idRoom");
         if ($query && $q_2) {

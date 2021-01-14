@@ -1,10 +1,5 @@
 <?php
 
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-ini_set('default_charset', 'utf-8');
-
 include_once 'bookings/crud_bookings.php';
 include_once 'rooms/crud_rooms.php';
 include_once 'connect.php';

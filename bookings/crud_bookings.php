@@ -8,9 +8,9 @@ include_once 'connect.php';
 function createBooking($connection, $inputData)
 {
     $er = new Errors();
-    $id_room = $inputData['id_room'];
-    $data_start = $inputData['start_data'];
-    $data_end = $inputData['end_data'];
+    $id_room = $connection->real_escape_string($inputData['id_room']);
+    $data_start = $connection->real_escape_string($inputData['start_data']);
+    $data_end = $connection->real_escape_string($inputData['end_data']);
     $existRoom = checkRow($connection, $id_room, 'room_list', 'id_room');
 
     if (isValidDate($data_start) && isValidDate($data_end) && $existRoom) {
@@ -37,6 +37,7 @@ function createBooking($connection, $inputData)
 function getOneBooking($connection, $idRoom)
 {
     $resp = new Errors();
+    $idRoom = $connection->real_escape_string($idRoom);
     $bookings = $connection->query("SELECT * FROM bookings WHERE id_room = $idRoom ORDER BY start_data");
     $bookings_list = [];
 
@@ -61,6 +62,7 @@ function deleteBooking($connection, $idBooking)
     $er = new Errors();
     $existBooking = checkRow($connection, $idBooking, 'bookings', 'id_booking');
     if ($existBooking != 0 && $idBooking != NULL) {
+        $idBooking = $connection->real_escape_string($idBooking);
         $query = $connection->query("DELETE FROM `bookings` WHERE `bookings`.`id_booking` = $idBooking");
         http_response_code(200);
         $response = array(
