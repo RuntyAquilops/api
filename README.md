@@ -17,7 +17,7 @@ git clone https://github.com/RuntyAquilops/api.git hotel
 
 2. Открыть phpMyAdmin и импортировать дамп базы данных (файл db_hotel.sql в данном репозитории).
 
-![Импортирование базы данных](https://github.com/RuntyAquilops/api/raw/master/images/import_db.png)
+![Импортирование базы данных](images/import_db.png)
 
 Далее нажать кнопку Go.
 
